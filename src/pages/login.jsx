@@ -56,44 +56,80 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="w-full h-screen bg-[url('/login.jpg')] bg-center bg-cover flex  justify-evenly items-center">
-      <div className="w-[50%] h-full "></div>
-      <div className="w-[50%] h-full flex justify-center items-center">
-        <div className="w-[500px] h-[600px] backdrop-blur-md rounded-[20px] shadow-xl flex flex-col justify-center items-center">
-          <input
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            value={email}
-            className="w-[300px] h-[50px] border border-[#c3efe9] rounded-[20px] my-[20px] "
+    <div className="flex h-screen">
+      {/* Left side - Login form */}
+      <div className="w-1/2 flex flex-col justify-center items-center px-12 bg-white">
+        {/* Logo */}
+        <div className="flex items-center mb-10">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/1828/1828859.png"
+            alt="logo"
+            className="w-8 h-8 mr-2"
           />
+          <h1 className="text-2xl font-bold text-blue-600">Adlisting</h1>
+        </div>
 
-          <input
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            value={password}
-            type="password"
-            className="w-[300px] h-[50px]  border border-[#c3efe9] rounded-[20px] mb-[20px]"
-          />
+        {/* Form */}
+        <div className="w-full max-w-sm">
+          <h2 className="text-center text-gray-700 mb-6">
+            Sign in to start your session
+          </h2>
+          <form className="space-y-4">
+            {/* Email */}
+            <div className="relative">
+              <input
+                type="email"
+                placeholder="admin@mail.com"
+                className="w-full px-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+              <span className="absolute left-3 top-2.5 text-gray-400">📧</span>
+            </div>
 
-          <button
-            onClick={handleLogin}
-            className="w-[300px] cursor-pointer h-[50px] bg-[#c3efe9] rounded-[20px] my-[20px] text-[20px] font-bold text-white"
-          >
-            Login
-          </button>
-          <button
-            onClick={googleLogin}
-            className="w-[300px] cursor-pointer h-[50px] flex justify-center items-center bg-[#c3efe9] rounded-[20px] my-[20px] text-[20px] font-bold text-white"
-          >
-            <GrGoogle className="text-xl text-gray-600 cursur-pointer hover:text-gray-800" />
-            <span className="text-gray-600 text-xl font-semibold">
-              Login with Google
-            </span>
-          </button>
+            {/* Password */}
+            <div className="relative">
+              <input
+                type="password"
+                placeholder="********"
+                className="w-full px-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+              <span className="absolute left-3 top-2.5 text-gray-400">🔒</span>
+            </div>
+
+            {/* Remember Me + Forgot */}
+            <div className="flex justify-between items-center text-sm">
+              <label className="flex items-center space-x-2">
+                <input type="checkbox" className="accent-blue-600" />
+                <span>Remember Me</span>
+              </label>
+              <a href="#" className="text-blue-600 hover:underline">
+                I forgot my password
+              </a>
+            </div>
+
+            {/* Button */}
+            <button
+              type="submit"
+              className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+            >
+              Sign In →
+            </button>
+          </form>
+
+          {/* Footer Quote */}
+          <p className="text-center text-xs text-gray-500 mt-6">
+            “ Be present above all else. ” — Naval Ravikant
+          </p>
         </div>
       </div>
+
+      {/* Right side - Background image */}
+      <div
+        className="w-1/2 h-full bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e')",
+        }}
+      ></div>
     </div>
   );
 }
