@@ -8,6 +8,7 @@ import SearchProductPage from "./client/searchProducts";
 import ContactUsPage from "./client/contactUsPage";
 import AboutUsPage from "./client/aboutUsPage";
 import HomeUsPage from "./homeUsPage";
+// <Route path="/" element={<HomeUsPage />} />
 
 export default function HomePage() {
   return (

@@ -1,66 +1,108 @@
-import { Phone, Mail, MapPin, Send } from "lucide-react";
-export default function HomeUsPage() {
+import { useState } from "react";
+
+export default function HomePage() {
+  const [search, setSearch] = useState("");
+
+  const categories = [
+    { name: "Vehicles", count: 217, icon: "🚗" },
+    { name: "Home & Living", count: 131, icon: "🏠" },
+    { name: "Mobile Phone", count: 108, icon: "📱" },
+    { name: "Business & Industry", count: 101, icon: "🏭" },
+    { name: "Hobbies, Sports & Kids", count: 91, icon: "🏀" },
+    { name: "Property", count: 0, icon: "🏢" },
+    { name: "Women Fashion & Beauty", count: 0, icon: "👗" },
+    { name: "Men's Fashion & Grooming", count: 0, icon: "👔" },
+    { name: "Essentials", count: 0, icon: "🛠️" },
+    { name: "Education", count: 0, icon: "🎓" },
+  ];
+
+  const featuredListings = [
+    {
+      title: "TVS Apache RTR 160CC Motor Cycle",
+      price: "₹4983",
+      location: "Canada",
+      category: "Vehicles",
+      image:
+        "https://www.tvsmotor.com/-/media/feature/tvs/product/apachertr160/new/apache-rtr-160-4v.png",
+      urgent: true,
+    },
+    {
+      title: "Chevrolet Equinox (2022) used78",
+      price: "₹466",
+      location: "United Kingdom",
+      category: "Vehicles",
+      image: "https://images.unsplash.com/photo-1616788576496-80b9a2f5c2d7",
+      urgent: true,
+    },
+    {
+      title: "Acura RDX for sale6",
+      price: "₹3887",
+      location: "Andorra",
+      category: "Vehicles",
+      image: "https://images.unsplash.com/photo-1608222355155-cf58d2b204d4",
+      urgent: false,
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-white text-gray-800 px-6 py-10">
-      {/* Hero Section */}
-      <section className="text-center mb-16 bg-gradient-to-r from-gray-700 to-gray-800 text-white py-20">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">Welcome to CBC</h1>
-        <p className="text-lg md:text-xl max-w-2xl mx-auto">
-          Your one-stop destination for handcrafted custom clothing blending
-          tradition and trend.
-        </p>
-      </section>
-      {/* Features Section */}
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-        <div className="border rounded-2xl p-6 shadow hover:shadow-lg transition">
-          <h3 className="text-xl font-semibold mb-2">🎨 Custom Designs</h3>
-          <p>
-            Create your own look with our wide range of custom tailoring
-            options.
-          </p>
-        </div>
-        <div className="border rounded-2xl p-6 shadow hover:shadow-lg transition">
-          <h3 className="text-xl font-semibold mb-2">📐 Personalized Fit</h3>
-          <p>We make clothes that fit you perfectly using your measurements.</p>
-        </div>
-        <div className="border rounded-2xl p-6 shadow hover:shadow-lg transition">
-          <h3 className="text-xl font-semibold mb-2">⏱ Fast Delivery</h3>
-          <p>
-            Get your outfits delivered quickly and reliably to your doorstep.
-          </p>
+    <div className="min-h-screen bg-white">
+      {/* Top Navbar */}
+
+      {/* Categories */}
+      <section className="py-12 px-6">
+        <h3 className="text-xl font-bold mb-6 text-center">All Categories</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 max-w-5xl mx-auto">
+          {categories.map((cat, i) => (
+            <div
+              key={i}
+              className="p-4 bg-gray-100 rounded-xl shadow hover:shadow-lg text-center"
+            >
+              <div className="text-3xl">{cat.icon}</div>
+              <h4 className="font-semibold">{cat.name}</h4>
+              <p className="text-sm text-gray-500">{cat.count} Listings</p>
+            </div>
+          ))}
         </div>
       </section>
-      {/* About Short Section */}
-      <section className="text-center bg-gray-100 p-10 rounded-2xl mb-20">
-        <h2 className="text-3xl font-bold mb-4">About CBC</h2>
-        <p className="text-gray-700 max-w-3xl mx-auto">
-          Founded in 2024, CBC aims to merge creativity and comfort with
-          fashion. We offer a seamless experience from design to delivery with
-          real-time customization and top-notch support.
-        </p>
-      </section>
-      {/* Contact Section */}
-      <section className="bg-white rounded-2xl p-6 border shadow-md max-w-3xl mx-auto">
-        <h2 className="text-2xl font-bold mb-6 text-center">Get in Touch</h2>
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-3">
-            <Phone className="text-blue-600" />
-            <span>+94 77 123 4567</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Mail className="text-blue-600" />
-            <span>support@cbcclothing.com</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <MapPin className="text-blue-600" />
-            <span>Colombo, Sri Lanka</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Send className="text-blue-600" />
-            <span>Live Chat Available 24/7</span>
-          </div>
+
+      {/* Featured Listings */}
+      <section className="py-12 px-6 bg-gray-50">
+        <h3 className="text-xl font-bold mb-6 text-center">Featured Listing</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {featuredListings.map((item, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-xl shadow-md overflow-hidden"
+            >
+              <img
+                src={item.image}
+                alt={item.title}
+                className="h-40 w-full object-cover"
+              />
+              <div className="p-4">
+                <h4 className="font-semibold truncate">{item.title}</h4>
+                <p className="text-red-500 font-bold">{item.price}</p>
+                <p className="text-sm text-gray-500">
+                  {item.location} · {item.category}
+                </p>
+                {item.urgent && (
+                  <span className="text-xs bg-red-500 text-white px-2 py-1 rounded">
+                    Urgent
+                  </span>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
+
+      {/* Footer / Cookies */}
+      <footer className="bg-gray-900 text-gray-300 py-6 text-center">
+        <p>We use cookies to provide our services and analytics.</p>
+        <button className="mt-3 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+          Allow all Cookies
+        </button>
+      </footer>
     </div>
   );
 }
