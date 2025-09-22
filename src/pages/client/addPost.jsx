@@ -53,16 +53,11 @@ export default function AddPostPage() {
 
       await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/api/listings",
-        listing,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
+        listing
       );
 
       toast.success("Listing added successfully!");
-      navigate("/admin/listings");
+      navigate("/client/listings");
     } catch (e) {
       console.error(e);
       toast.error("Error saving listing");
