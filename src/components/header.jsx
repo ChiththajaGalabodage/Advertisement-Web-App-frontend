@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Sun, Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function NavbarWithSearch() {
   const [currency, setCurrency] = useState("INR");
@@ -10,6 +11,8 @@ export default function NavbarWithSearch() {
   const [searchItem, setSearchItem] = useState("");
   const [searchLocation, setSearchLocation] = useState("");
   const [showCountry, setShowCountry] = useState(false);
+
+  const navigate = useNavigate();
 
   const currencies = ["INR", "USD", "EUR", "GBP", "JPY"];
   const languages = ["Bulgarian", "English", "Spanish", "French", "German"];
@@ -110,7 +113,10 @@ export default function NavbarWithSearch() {
           <a href="#" className="hover:underline cursor-pointer">
             Login
           </a>
-          <button className="bg-white text-black px-4 py-2 rounded-lg cursor-pointer">
+          <button
+            className="bg-white text-black px-4 py-2 rounded-lg cursor-pointer"
+            onClick={() => navigate("/client/addPost", { replace: true })}
+          >
             + Post
           </button>
         </div>

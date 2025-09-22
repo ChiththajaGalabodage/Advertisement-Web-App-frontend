@@ -8,6 +8,7 @@ import SearchProductPage from "./client/searchProducts";
 import ContactUsPage from "./client/contactUsPage";
 import AboutUsPage from "./client/aboutUsPage";
 import HomeUsPage from "./homeUsPage";
+import AddPostPage from "./client/addPost";
 // <Route path="/" element={<HomeUsPage />} />
 
 export default function HomePage() {
@@ -25,6 +26,7 @@ export default function HomePage() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/search" element={<SearchProductPage />} />
           <Route path="/overview/:id" element={<ProductOverviewPage />} />
+          <Route path="/client/addPost" element={<AddPostPage />} />
           <Route path="/*" element={<h1>404 Not Found</h1>} />
         </Routes>
       </div>
