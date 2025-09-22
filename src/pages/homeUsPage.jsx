@@ -1,8 +1,23 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import Footer from "../components/footer";
+import FeaturedListing from "../components/featuredLisiting";
 
 export default function HomePage() {
   const [search, setSearch] = useState("");
+  const [listings, setListings] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (isLoading) {
+      axios
+        .get(import.meta.env.VITE_BACKEND_URL + "/api/listings")
+        .then((res) => {
+          setListings(res.data);
+          setIsLoading(false);
+        });
+    }
+  }, [isLoading]);
 
   const categories = [
     { name: "Vehicles", count: 217, icon: "🚗" },
@@ -67,31 +82,16 @@ export default function HomePage() {
       {/* Featured Listings */}
       <section className="py-12 px-6 bg-gray-50">
         <h3 className="text-xl font-bold mb-6 text-center">Featured Listing</h3>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {featuredListings.map((item, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-xl shadow-md overflow-hidden"
-            >
-              <img
-                src={item.image}
-                alt={item.title}
-                className="h-40 w-full object-cover"
+          {listings.map((featuredListings) => {
+            return (
+              <FeaturedListing
+                key={featuredListings.title}
+                featuredListings={featuredListings}
               />
-              <div className="p-4">
-                <h4 className="font-semibold truncate">{item.title}</h4>
-                <p className="text-red-500 font-bold">{item.price}</p>
-                <p className="text-sm text-gray-500">
-                  {item.location} · {item.category}
-                </p>
-                {item.urgent && (
-                  <span className="text-xs bg-red-500 text-white px-2 py-1 rounded">
-                    Urgent
-                  </span>
-                )}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
