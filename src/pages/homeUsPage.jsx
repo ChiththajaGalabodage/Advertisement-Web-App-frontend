@@ -4,7 +4,6 @@ import Footer from "../components/footer";
 import FeaturedListing from "../components/featuredLisiting";
 
 export default function HomePage() {
-  const [search, setSearch] = useState("");
   const [listings, setListings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 

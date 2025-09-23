@@ -1,19 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import Header from "../components/header";
-import ProductPage from "./client/productPage";
-import ProductOverviewPage from "./client/productOverview";
-import CartPage from "./client/cart";
-import CheckoutPage from "./client/checkOut";
-import SearchProductPage from "./client/searchProducts";
-import ContactUsPage from "./client/contactUsPage";
+
 import AboutUsPage from "./client/aboutUsPage";
 import HomeUsPage from "./homeUsPage";
 import AddPostPage from "./client/addPost";
 import BlogPage from "./client/blog";
 import Listing from "./client/listing";
 import PricingPlan from "./client/pricingPlan";
-import Footer from "../components/footer";
-// <Route path="/" element={<HomeUsPage />} />
 
 export default function HomePage() {
   return (
