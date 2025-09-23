@@ -9,7 +9,7 @@ import { FaXTwitter } from "react-icons/fa6";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#E9F1FA] py-6 px-6 border-t">
+    <footer className="bg-[#E9F1FA] py-6 px-6 border-t w-full">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
         {/* Left Section */}
         <div className="flex flex-col items-start space-y-3">
@@ -21,10 +21,10 @@ export default function Footer() {
 
           {/* Nav Links */}
           <nav className="flex space-x-6 text-sm font-semibold">
-            <a href="#">Listing</a>
-            <a href="#">About us</a>
-            <a href="#">Blog</a>
-            <a href="#">Pricing Plan</a>
+            <a href="/listing">Listing</a>
+            <a href="/about">About us</a>
+            <a href="/blog">Blog</a>
+            <a href="/pricingPlan">Pricing Plan</a>
           </nav>
         </div>
 
