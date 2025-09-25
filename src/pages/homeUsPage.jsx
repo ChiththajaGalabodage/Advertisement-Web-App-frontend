@@ -114,55 +114,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/*Latest Listings*/}
-      <section className="py-12 px-6 bg-gray-200 w-screen">
-        <h3 className="text-xl font-bold mb-6 text-center">Latest Listings</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {featuredListings.map((item, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-xl shadow-md overflow-hidden"
-            >
-              <img
-                src={item.image}
-                alt={item.title}
-                className="h-40 w-full object-cover"
-              />
-              <div className="p-4">
-                <h4 className="font-semibold truncate">{item.title}</h4>
-                <p className="text-red-500 font-bold">{item.price}</p>
-                <p className="text-sm text-gray-500">
-                  {item.location} · {item.category}
-                </p>
-                {item.urgent && (
-                  <span className="text-xs bg-red-500 text-white px-2 py-1 rounded">
-                    Urgent
-                  </span>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-8 flex justify-center">
-          <button className="flex items-center gap-2 border-black bg-white text-black px-6 py-3 rounded-full shadow-md hover:bg-blue-700">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-5 h-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"
-              />
-            </svg>
-            Browse All
-          </button>
-        </div>
-      </section>
       <Footer />
     </div>
   );
