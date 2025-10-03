@@ -31,34 +31,6 @@ export default function HomePage() {
     { name: "Education", count: 0, icon: "🎓" },
   ];
 
-  const featuredListings = [
-    {
-      title: "TVS Apache RTR 160CC Motor Cycle",
-      price: "₹4983",
-      location: "Canada",
-      category: "Vehicles",
-      image:
-        "https://www.tvsmotor.com/-/media/feature/tvs/product/apachertr160/new/apache-rtr-160-4v.png",
-      urgent: true,
-    },
-    {
-      title: "Chevrolet Equinox (2022) used78",
-      price: "₹466",
-      location: "United Kingdom",
-      category: "Vehicles",
-      image: "https://images.unsplash.com/photo-1616788576496-80b9a2f5c2d7",
-      urgent: true,
-    },
-    {
-      title: "Acura RDX for sale6",
-      price: "₹3887",
-      location: "Andorra",
-      category: "Vehicles",
-      image: "https://images.unsplash.com/photo-1608222355155-cf58d2b204d4",
-      urgent: false,
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-white">
       {/* Categories */}

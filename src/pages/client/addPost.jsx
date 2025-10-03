@@ -5,6 +5,7 @@ import mediaUpload from "../../utils/mediaUpload";
 import axios from "axios";
 
 export default function AddPostPage() {
+  const [listingId, setListingId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -39,6 +40,7 @@ export default function AddPostPage() {
       const imageUrls = await Promise.all(promisesArray);
 
       const listing = {
+        listingId,
         title,
         description,
         price,

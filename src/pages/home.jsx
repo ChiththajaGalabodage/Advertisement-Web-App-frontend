@@ -7,6 +7,7 @@ import AddPostPage from "./client/addPost";
 import BlogPage from "./client/blog";
 import Listing from "./client/listing";
 import PricingPlan from "./client/pricingPlan";
+import ListingOverviewPage from "./client/listingOverview";
 
 export default function HomePage() {
   return (
@@ -23,6 +24,7 @@ export default function HomePage() {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/listing" element={<Listing />} />
           <Route path="/pricingPlan" element={<PricingPlan />} />
+          <Route path="/overview/:id" element={<ListingOverviewPage />} />
           <Route path="/*" element={<h1>404 Not Found</h1>} />
         </Routes>
       </div>

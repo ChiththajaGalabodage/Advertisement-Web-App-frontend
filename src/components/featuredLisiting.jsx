@@ -1,6 +1,11 @@
+import { Link } from "react-router-dom";
+
 export default function FeaturedListing({ featuredListings }) {
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden">
+    <Link
+      to={"/overview/" + featuredListings.listingId}
+      className="bg-white rounded-xl shadow-md overflow-hidden"
+    >
       <img
         src={featuredListings.image}
         alt={featuredListings.title}
@@ -18,6 +23,6 @@ export default function FeaturedListing({ featuredListings }) {
           </span>
         )}
       </div>
-    </div>
+    </Link>
   );
 }
