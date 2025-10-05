@@ -3,20 +3,20 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 export default function ListingOverviewPage() {
-  const { id } = useParams(); // listingId from route
-  const [listing, setListing] = useState(null);
+  const { listingId } = useParams(); // listingId from route
+  const [listing, setListing] = useState();
 
   useEffect(() => {
     const fetchListing = async () => {
       try {
-        const res = await axios.get(`/api/listings/${id}`);
+        const res = await axios.get(`/api/listings/${listingId}`);
         setListing(res.data);
       } catch (err) {
         console.error("Error fetching listing:", err);
       }
     };
     fetchListing();
-  }, [id]);
+  }, [listingId]);
 
   if (!listing) {
     return <p className="text-center mt-10">Loading...</p>;
@@ -33,12 +33,12 @@ export default function ListingOverviewPage() {
         {/* Left - Images */}
         <div>
           <img
-            src={listing.image[0]}
+            src={listing.image?.[0]}
             alt={listing.title}
             className="w-full rounded-lg shadow"
           />
           <div className="flex gap-2 mt-3">
-            {listing.image.map((img, i) => (
+            {listing.image?.map((img, i) => (
               <img
                 key={i}
                 src={img}
@@ -52,9 +52,11 @@ export default function ListingOverviewPage() {
         {/* Right - Info */}
         <div className="space-y-4">
           <p className="text-3xl font-bold text-green-600">
-            {listing.currency} {listing.price.toLocaleString()}
+            {listing.currency}{" "}
+            {listing.price
+              ? listing.price.toLocaleString()
+              : "Contact for Price"}
           </p>
-
           {/* Contact / Share */}
           <div className="flex items-center gap-3">
             <button className="px-4 py-2 bg-green-500 text-white rounded-lg">
