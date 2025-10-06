@@ -24,7 +24,10 @@ export default function HomePage() {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/listing" element={<Listing />} />
           <Route path="/pricingPlan" element={<PricingPlan />} />
-          <Route path="/overview/:id" element={<ListingOverviewPage />} />
+          <Route
+            path="/overview/:listingId"
+            element={<ListingOverviewPage />}
+          />
           <Route path="/*" element={<h1>404 Not Found</h1>} />
         </Routes>
       </div>
