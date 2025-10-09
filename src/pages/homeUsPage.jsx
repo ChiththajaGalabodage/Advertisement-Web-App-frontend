@@ -59,7 +59,7 @@ export default function HomePage() {
           {listings.map((featuredListings) => {
             return (
               <FeaturedListing
-                key={featuredListings.title}
+                key={featuredListings.listingId}
                 featuredListings={featuredListings}
               />
             );
