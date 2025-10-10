@@ -6,11 +6,18 @@ export default function FeaturedListing({ featuredListings }) {
       to={"/overview/" + featuredListings.listingId}
       className="bg-white rounded-xl shadow-md overflow-hidden"
     >
-      <img
-        src={featuredListings.image}
-        alt={featuredListings.title}
-        className="h-40 w-full object-cover"
-      />
+      <div className="h-[200px] w-full bg-gray-200 flex justify-center items-center">
+        {featuredListings.image && featuredListings.image.length > 0 ? (
+          <img
+            src={featuredListings.image[0]}
+            alt={featuredListings.name}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <span className="text-gray-500">No Image</span>
+        )}
+      </div>
+
       <div className="p-4">
         <h4 className="font-semibold truncate">{featuredListings.title}</h4>
         <p className="text-red-500 font-bold">{featuredListings.price}</p>
