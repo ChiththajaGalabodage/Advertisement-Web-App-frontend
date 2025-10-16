@@ -110,7 +110,7 @@ export default function NavbarWithSearch() {
           <a href="#" className="hover:underline cursor-pointer">
             Favorite Listing
           </a>
-          <a href="#" className="hover:underline cursor-pointer">
+          <a href="/login" className="hover:underline cursor-pointer">
             Login
           </a>
           <button
