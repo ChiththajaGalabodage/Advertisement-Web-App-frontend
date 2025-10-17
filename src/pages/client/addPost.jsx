@@ -9,7 +9,8 @@ export default function AddPostPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [currency, setCurrency] = useState("LKR");
+  // Changed the default currency to one from the new list
+  const [currency, setCurrency] = useState("INR");
   const [Images, setImage] = useState([]);
   const [country, setCountry] = useState("");
   const [category, setCategory] = useState("");
@@ -18,6 +19,22 @@ export default function AddPostPage() {
   const [badge, setBadge] = useState("");
 
   const navigate = useNavigate();
+
+  const categoryOptions = [
+    "Vehicles",
+    "Home & Living",
+    "Mobile Phone",
+    "Business & Industry",
+    "Hobbies, Sports & Kids",
+    "Property",
+    "Women Fashion & Beauty",
+    "Men's Fashion & Grooming",
+    "Essentials",
+    "Education",
+  ];
+
+  // Array for currency options
+  const currencyOptions = ["INR", "USD", "EUR", "GBP", "JPY"];
 
   async function AddPost() {
     const token = localStorage.getItem("token");
@@ -31,8 +48,12 @@ export default function AddPostPage() {
       return;
     }
 
+    if (!category) {
+      toast.error("Please select a category");
+      return;
+    }
+
     try {
-      // Upload images
       const promisesArray = [];
       for (let i = 0; i < Images.length; i++) {
         promisesArray[i] = mediaUpload(Images[i]);
@@ -45,7 +66,7 @@ export default function AddPostPage() {
         description,
         price,
         currency,
-        image: imageUrls, // array of URLs
+        image: imageUrls,
         country,
         category,
         featured,
@@ -91,7 +112,7 @@ export default function AddPostPage() {
           required
         ></textarea>
 
-        {/* Price */}
+        {/* Price and Currency */}
         <div className="flex gap-2">
           <input
             type="number"
@@ -102,17 +123,22 @@ export default function AddPostPage() {
             className="w-1/2 border p-2 rounded"
             required
           />
-          <input
-            type="text"
+          {/* Currency Dropdown Selector */}
+          <select
             name="currency"
-            placeholder="Currency"
             value={currency}
             onChange={(e) => setCurrency(e.target.value)}
             className="w-1/2 border p-2 rounded"
-          />
+          >
+            {currencyOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
         </div>
 
-        {/* Image URL */}
+        {/* Image Upload */}
         <input
           type="file"
           name="Image"
@@ -133,16 +159,23 @@ export default function AddPostPage() {
           required
         />
 
-        {/* Category */}
-        <input
-          type="text"
+        {/* Category Dropdown Selector */}
+        <select
           name="category"
-          placeholder="Category (e.g., Vehicles, Electronics)"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           className="w-full border p-2 rounded"
           required
-        />
+        >
+          <option value="" disabled>
+            -- Select a Category --
+          </option>
+          {categoryOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
 
         {/* Options */}
         <div className="flex gap-4">
