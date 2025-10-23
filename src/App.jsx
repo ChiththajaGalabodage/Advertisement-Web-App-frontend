@@ -10,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 //import AddProductPage from "./pages/admin/addProductPage";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import ForgetPasswordPage from "./pages/forgetPassword";
+import CategoryPage from "./pages/CategoryPage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/admin/*" element={<AdminPage />} />
 
             <Route path="/*" element={<HomePage />} />
+            <Route path="/category/:categoryName" element={<CategoryPage />} />
           </Routes>
         </div>
       </BrowserRouter>

@@ -8,7 +8,6 @@ import BlogPage from "./client/blog";
 import Listing from "./client/listing";
 import PricingPlan from "./client/pricingPlan";
 import ListingOverviewPage from "./client/listingOverview";
-import CategoryPage from "./pages/CategoryPage";
 
 export default function HomePage() {
   return (
@@ -30,7 +29,6 @@ export default function HomePage() {
             element={<ListingOverviewPage />}
           />
           <Route path="/*" element={<h1>404 Not Found</h1>} />
-          <Route path="/category/:categoryName" element={<CategoryPage />} />
         </Routes>
       </div>
     </div>
