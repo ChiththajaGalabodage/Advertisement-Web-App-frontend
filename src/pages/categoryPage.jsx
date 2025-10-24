@@ -6,9 +6,10 @@ import axios from "axios";
 import FeaturedListing from "../components/featuredLisiting"; // Reuse your listing card component
 
 export default function CategoryPage() {
+  const params = useParams(); // Get the category name from the URL
+  const categoryName = params.category;
   const [listings, setListings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { categoryName } = useParams(); // Get the category name from the URL
 
   useEffect(() => {
     async function fetchListingsByCategory() {
@@ -21,6 +22,7 @@ export default function CategoryPage() {
           }/api/listings?category=${categoryName}`
         );
         setListings(response.data);
+        console.log("Fetched listings for category:", response.data);
       } catch (error) {
         console.error("Failed to fetch listings for this category:", error);
       } finally {
