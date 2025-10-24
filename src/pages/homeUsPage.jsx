@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Footer from "../components/footer";
 import FeaturedListing from "../components/featuredLisiting";
+import CategoryGrid from "../components/categoryGrid";
 
 export default function HomePage() {
   const [listings, setListings] = useState([]);
@@ -34,21 +35,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Categories */}
-      <section className="py-12 px-6">
-        <h3 className="text-xl font-bold mb-6 text-center">All Categories</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 max-w-5xl mx-auto">
-          {categories.map((cat, i) => (
-            <div
-              key={i}
-              className="p-4 bg-gray-100 rounded-xl shadow hover:shadow-lg text-center"
-            >
-              <div className="text-3xl">{cat.icon}</div>
-              <h4 className="font-semibold">{cat.name}</h4>
-              <p className="text-sm text-gray-500">{cat.count} Listings</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <CategoryGrid />
 
       {/* Featured Listings */}
       <section className="py-12 px-6 bg-gray-200 w-screen">
