@@ -8,6 +8,7 @@ import BlogPage from "./client/blog";
 import Listing from "./client/listing";
 import PricingPlan from "./client/pricingPlan";
 import ListingOverviewPage from "./client/listingOverview";
+import Vehicles from "./client/categoryPages/vehicles";
 
 export default function HomePage() {
   return (
@@ -28,6 +29,7 @@ export default function HomePage() {
             path="/overview/:listingId"
             element={<ListingOverviewPage />}
           />
+          <Route path="/category/vehicles" element={<Vehicles />} />
           <Route path="/*" element={<h1>404 Not Found</h1>} />
         </Routes>
       </div>
