@@ -17,9 +17,10 @@ export default function CategoryPage() {
       try {
         // Fetch listings, filtering by the categoryName from the URL
         const response = await axios.get(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/listings?category=${categoryName}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/listings`,
+          {
+            params: { category: categoryName },
+          }
         );
         setListings(response.data);
         console.log("Fetched listings for category:", response.data);
