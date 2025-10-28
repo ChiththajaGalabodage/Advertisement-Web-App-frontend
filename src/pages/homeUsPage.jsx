@@ -15,11 +15,12 @@ export default function HomePage() {
         .then((res) => {
           setListings(res.data);
           setIsLoading(false);
+          console.log("Fetched listings:", res.data);
         });
     }
   }, [isLoading]);
 
-  const categories = [
+  const category = [
     { name: "Vehicles", count: 217, icon: "🚗" },
     { name: "Home & Living", count: 131, icon: "🏠" },
     { name: "Mobile Phone", count: 108, icon: "📱" },

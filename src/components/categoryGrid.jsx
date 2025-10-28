@@ -30,7 +30,7 @@ export default function CategoryGrid() {
             // 2. Each category is a Link to the dynamic category page
             <Link
               key={category.name}
-              to={`/category/${category.name}`} // This creates the link (e.g., "/category/Vehicles")
+              to={`/search/${category.name}`} // This creates the link (e.g., "/category/Vehicles")
               className="flex flex-col items-center justify-center p-6 bg-gray-100 rounded-lg shadow-sm hover:shadow-lg hover:bg-gray-200 transition-all"
             >
               {/* 3. Icon (replace emoji with your <img /> or icon component) */}

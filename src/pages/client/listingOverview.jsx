@@ -29,10 +29,10 @@ export default function ListingOverviewPage() {
     <>
       {status == "success" && (
         <div className="w-full h-full flex">
-          <div className="w-[50%] bg-red-900 h-full flex justify-center items-center">
+          <div className="w-[50%] h-full flex justify-center items-center">
             <ImageSlider images={listings.image} />
           </div>
-          <div className="w-[50%] bg-blue-900 h-full"></div>
+          <div className="w-[50%] h-full"></div>
         </div>
       )}
       {status == "loading" && <Loading />}
