@@ -3,12 +3,12 @@ export default function ImageSlider(props) {
   const I = props.images;
   const [currentIndex, setCurrentIndex] = useState(0);
   return (
-    <div className="w-[90%] md:w-[500px] h-[600px]  bg-amber-50  ">
+    <div className="w-[90%] md:w-full h-[600px]   ">
       <img
         src={I[currentIndex]}
         className="w-full h-[500px] object-cover rounded-3xl"
       />
-      <div className="w-full h-[100px] bg-slate-300 flex justify-center items-center">
+      <div className="w-full h-[100px]  flex justify-center items-center">
         {I?.map((image, index) => {
           return (
             <img
