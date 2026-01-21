@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from "../components/loading";
 import AdminUsersPage from "./admin/user";
+import AdminDashboard from "./AdminDashboard";
 
 export default function AdminPage() {
   const location = useLocation();
@@ -59,6 +60,9 @@ export default function AdminPage() {
       ) : (
         <>
           <div className="h-full w-[300px] text-accent font-bold px-4 gap-6   text-xl  flex flex-col bg-white">
+            <Link className={getClass("dashboard")} to="/admin/dashboard">
+              Dashboard
+            </Link>
             <Link className={getClass("products")} to="/admin/products">
               Products
             </Link>
@@ -75,6 +79,7 @@ export default function AdminPage() {
 
           <div className="h-full w-[calc(100%-300px)]  border-accent border-4 rounded-xl bg-white">
             <Routes path="/*">
+              <Route path="/dashboard" element={<AdminDashboard />} />
               <Route path="/products" element={<AdminProductsPage />} />
               <Route path="/users/gau/" element={<AdminUsersPage />} />
               <Route path="/orders" element={<AdminOrdersPage />} />

@@ -1,10 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 
-import HomePage from "./pages/home";
+import Home from "./pages/home";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
+import CreateListing from "./pages/CreateListing";
+import ListingDetail from "./pages/ListingDetail";
 import AdminPage from "./pages/adminPage";
+import AdminGuard from "./components/AdminGuard";
+import SearchPage from "./pages/SearchPage";
 
 import { Toaster } from "react-hot-toast";
 //import AddProductPage from "./pages/admin/addProductPage";
@@ -20,13 +24,24 @@ function App() {
           <Toaster position="top-right" />
           {/*<Headers /> */}
           <Routes path="/*">
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/forget" element={<ForgetPasswordPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/signup" element={<RegisterPage />} />
-            <Route path="/admin/*" element={<AdminPage />} />
-
-            <Route path="/*" element={<HomePage />} />
+            <Route path="/forget" element={<ForgetPasswordPage />} />
+            <Route path="/create-listing" element={<CreateListing />} />
+            <Route path="/listing/:id" element={<ListingDetail />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route
+              path="/admin/*"
+              element={
+                <AdminGuard>
+                  <AdminPage />
+                </AdminGuard>
+              }
+            />
             <Route path="/search/:categoryName" element={<CategoryPage />} />
+            <Route path="/*" element={<Home />} />
           </Routes>
         </div>
       </BrowserRouter>

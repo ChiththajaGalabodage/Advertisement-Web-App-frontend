@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Footer from "../components/footer";
-import FeaturedListing from "../components/featuredLisiting";
+import ListingCard from "../components/Card";
 import CategoryGrid from "../components/categoryGrid";
 
 export default function HomePage() {
@@ -44,14 +44,9 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {console.log("Listings data:", listings)}
-          {listings.map((featuredListings) => {
-            return (
-              <FeaturedListing
-                key={featuredListings.listingId}
-                featuredListings={featuredListings}
-              />
-            );
-          })}
+          {listings.map((listing) => (
+            <ListingCard key={listing._id} listing={listing} size="medium" />
+          ))}
         </div>
 
         <div className="mt-8 flex justify-center">

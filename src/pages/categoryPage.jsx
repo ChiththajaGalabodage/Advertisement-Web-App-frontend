@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import FeaturedListing from "../components/featuredLisiting"; // Reuse your listing card component
+import ListingCard from "../components/Card";
 
 export default function CategoryPage() {
   const params = useParams(); // Get the category name from the URL
@@ -20,7 +20,7 @@ export default function CategoryPage() {
           `${import.meta.env.VITE_BACKEND_URL}/api/listings/search/`,
           {
             params: { category: categoryName },
-          }
+          },
         );
 
         //.get(import.meta.env.VITE_BACKEND_URL + "/api/products/" + productId)
@@ -52,10 +52,7 @@ export default function CategoryPage() {
       {listings.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {listings.map((listing) => (
-            <FeaturedListing
-              key={listing.listingId}
-              featuredListings={listing}
-            />
+            <ListingCard key={listing._id} listing={listing} size="medium" />
           ))}
         </div>
       ) : (

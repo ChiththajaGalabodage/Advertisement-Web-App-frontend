@@ -30,7 +30,8 @@ export default function LoginPage() {
     },
   });
 
-  async function handleLogin() {
+  async function handleLogin(e) {
+    e.preventDefault();
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/api/users/login",
@@ -74,13 +75,16 @@ export default function LoginPage() {
           <h2 className="text-center text-gray-700 mb-6">
             Sign in to start your session
           </h2>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleLogin}>
             {/* Email */}
             <div className="relative">
               <input
                 type="email"
                 placeholder="admin@mail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
               />
               <span className="absolute left-3 top-2.5 text-gray-400">📧</span>
             </div>
@@ -90,7 +94,10 @@ export default function LoginPage() {
               <input
                 type="password"
                 placeholder="********"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
               />
               <span className="absolute left-3 top-2.5 text-gray-400">🔒</span>
             </div>
