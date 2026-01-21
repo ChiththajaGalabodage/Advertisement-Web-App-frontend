@@ -38,7 +38,7 @@ export default function LoginPage() {
         {
           email: email,
           password: password,
-        }
+        },
       );
       // alert("Login Successful")
       toast.success("Login Successful");
