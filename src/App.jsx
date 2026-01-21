@@ -9,6 +9,8 @@ import ListingDetail from "./pages/ListingDetail";
 import AdminPage from "./pages/adminPage";
 import AdminGuard from "./components/AdminGuard";
 import SearchPage from "./pages/SearchPage";
+import AboutUsPage from "./pages/client/aboutUsPage";
+import PricingPlan from "./pages/client/pricingPlan";
 
 import { Toaster } from "react-hot-toast";
 //import AddProductPage from "./pages/admin/addProductPage";
@@ -29,6 +31,8 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/signup" element={<RegisterPage />} />
             <Route path="/forget" element={<ForgetPasswordPage />} />
+            <Route path="/about" element={<AboutUsPage />} />
+            <Route path="/pricingPlan" element={<PricingPlan />} />
             <Route path="/create-listing" element={<CreateListing />} />
             <Route path="/listing/:id" element={<ListingDetail />} />
             <Route path="/search" element={<SearchPage />} />
