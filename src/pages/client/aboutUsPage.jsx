@@ -79,7 +79,7 @@ const AboutUsPage = () => {
             </div>
             <h3 className="text-xl font-semibold mb-2">User Centric</h3>
             <p className="text-gray-500">
-              A mobile-friendly experience allowing you to manage ads anywhere,
+              A mobile-friendly experence allowing you to manage ads anywhere,
               anytime.
             </p>
           </div>
