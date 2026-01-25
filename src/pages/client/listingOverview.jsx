@@ -8,10 +8,16 @@ import toast from "react-hot-toast";
 // Import icons for a nicer UI
 import { FaTag, FaUserCircle, FaEnvelope, FaPhone } from "react-icons/fa";
 
+// For contact modal
+import { useSelector } from "react-redux"; // Assuming Redux for auth
+
 export default function ListingOverviewPage() {
   const { listingId } = useParams();
   const [status, setStatus] = useState("loading"); // loading, success, error
   const [listing, setListing] = useState(null); // Changed to singular 'listing'
+  const [modalOpen, setModalOpen] = useState(false);
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     // Set status to loading every time the ID changes
@@ -21,16 +27,50 @@ export default function ListingOverviewPage() {
     axios
       .get(import.meta.env.VITE_BACKEND_URL + "/api/listings/" + listingId)
       .then((response) => {
-        console.log("Fetched listing:", response.data);
+        console.log("✅ Fetched listing with populated userRef:", response.data);
         setListing(response.data); // Set singular listing
         setStatus("success");
       })
       .catch((error) => {
-        console.log(error);
+        console.error("❌ Error fetching listing:", error.message);
         setStatus("error");
         toast.error("Failed to fetch listing details");
       });
   }, [listingId]); // CRITICAL: Add listingId as a dependency
+
+  const handleContact = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login to contact the seller");
+      return;
+    }
+    setModalOpen(true);
+  };
+
+  const handleSendMessage = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      await axios.post(
+        import.meta.env.VITE_BACKEND_URL + "/api/contacts",
+        {
+          receiverId: listing?.userRef?._id,
+          listingId: listing?._id,
+          subject,
+          message,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      toast.success("Message sent successfully");
+      setModalOpen(false);
+      setSubject("");
+      setMessage("");
+    } catch (error) {
+      console.error("❌ Error sending message:", error.message);
+      toast.error("Failed to send message");
+    }
+  };
 
   // --- Loading State ---
   if (status === "loading") {
@@ -88,48 +128,97 @@ export default function ListingOverviewPage() {
             </p>
           </div>
 
-          {/* --- Box 2: Seller Details --- */}
-          {/* Only show this box if the seller (userRef) data exists */}
-          {listing.userRef && (
+          {/* --- Box 2: Seller Details --- */}, using optional chaining */}
+          {listing?.userRef && (
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-2xl font-semibold mb-6 text-center border-b pb-3">
                 Seller Information
               </h2>
 
               <div className="flex flex-col items-center">
-                {listing.userRef.profilePicture ? (
+                {/* Seller Profile Picture */}
+                {listing?.userRef?.profilePicture ? (
                   <img
                     src={listing.userRef.profilePicture}
-                    alt={listing.userRef.username}
+                    alt={listing?.userRef?.firstName}
                     className="w-24 h-24 rounded-full object-cover mb-4 border-2 border-gray-300"
                   />
                 ) : (
-                  // Default avatar icon
                   <FaUserCircle className="w-24 h-24 text-gray-400 mb-4" />
                 )}
 
-                <h3 className="text-xl font-bold">
-                  {listing.userRef.username}
+                {/* Seller's Full Name */}
+                <h3 className="text-xl font-bold text-gray-800">
+                  {listing?.userRef?.firstName} {listing?.userRef?.lastName}
                 </h3>
 
-                <div className="text-gray-600 mt-4 space-y-2">
+                {/* Seller's Contact Information */}
+                <div className="text-gray-600 mt-4 space-y-2 w-full">
+                  {/* Email */}
+                  {listing?.userRef?.email && (
+                    <p className="flex items-center gap-2">
+                      <FaEnvelope className="text-blue-500 flex-shrink-0" />
+                      <span className="break-all">{listing.userRef.email}</span>
+                    </p>
+                  )}
+
+                  {/* Phone Number with Fallback */}
                   <p className="flex items-center gap-2">
-                    <FaEnvelope />
-                    <span>{listing.userRef.email}</span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <FaPhone />
-                    <span>{listing.userRef.phoneNumber || "Not provided"}</span>
+                    <FaPhone className="text-green-500 flex-shrink-0" />
+                    <span>
+                      {listing?.userRef?.phoneNumber || "Not provided"}
+                    </span>
                   </p>
                 </div>
 
-                <button className="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                {/* Contact Seller Button */}                </div>
+
+                <button
+                  onClick={handleContact}
+                  className="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
+                >
                   Contact Seller
                 </button>
               </div>
             </div>
           )}
         </div>
+
+        {/* Contact Modal */}
+        {modalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+              <h3 className="text-xl font-bold mb-4">Contact Seller</h3>
+              <input
+                type="text"
+                placeholder="Subject"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded mb-4"
+              />
+              <textarea
+                placeholder="Message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded mb-4 h-32"
+              />
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={() => setModalOpen(false)}
+                  className="px-4 py-2 bg-gray-300 rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSendMessage}
+                  className="px-4 py-2 bg-blue-500 text-white rounded"
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     )
   );

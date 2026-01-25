@@ -23,7 +23,7 @@ export default function mediaUpload(file) {
         cacheControl: "3600",
       })
       .then(() => {
-        const publicUrl = supabase.storage.from("image").getPublicUrl(newName)
+        const publicUrl = supabase.storage.from("images").getPublicUrl(newName)
           .data.publicUrl;
         resolve(publicUrl);
       })

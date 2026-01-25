@@ -7,6 +7,7 @@ export default function RegisterPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,6 +21,7 @@ export default function RegisterPage() {
         !firstName.trim() ||
         !lastName.trim() ||
         !email.trim() ||
+        !phoneNumber.trim() ||
         !password.trim()
       ) {
         toast.error("All fields are required");
@@ -53,17 +55,19 @@ export default function RegisterPage() {
           firstName: firstName.trim(),
           lastName: lastName.trim(),
           email: email.trim(),
+          phoneNumber: phoneNumber.trim(),
           password: password,
         },
       );
 
       toast.success("Registration Successful! Redirecting to login...");
-      console.log(response.data);
+      console.log("✅ Registration successful:", response.data);
 
       // Clear form
       setFirstName("");
       setLastName("");
-      setEmail("");
+      setPhoneNumber("");
+
       setPassword("");
       setConfirmPassword("");
 
@@ -72,7 +76,10 @@ export default function RegisterPage() {
         navigate("/login");
       }, 2000);
     } catch (error) {
-      console.error(error);
+      console.error(
+        "❌ Registration error:",
+        error.response?.data || error.message,
+      );
       if (error.response?.data?.message) {
         toast.error(error.response.data.message);
       } else {
@@ -140,6 +147,19 @@ export default function RegisterPage() {
                 required
               />
               <span className="absolute left-3 top-2.5 text-gray-400">📧</span>
+            </div>
+
+            {/* Phone Number */}
+            <div className="relative">
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className="w-full px-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
+              />
+              <span className="absolute left-3 top-2.5 text-gray-400">📱</span>
             </div>
 
             {/* Password */}

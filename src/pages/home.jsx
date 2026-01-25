@@ -229,9 +229,9 @@ export default function Home() {
             {/* View All Button */}
             {!loading && listings.length > 0 && (
               <div className="mt-12 flex justify-center">
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition">
+                {/* <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition">
                   Load More Listings
-                </button>
+                </button>*/}
               </div>
             )}
           </div>

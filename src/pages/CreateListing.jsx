@@ -63,34 +63,47 @@ export default function CreateListing() {
         const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
         const filePath = `listings/${fileName}`;
 
-        // Upload to Supabase Storage
-        const { error } = await supabase.storage
-          .from("advertisement-images")
-          .upload(filePath, file);
+        try {
+          // Upload to Supabase Storage
+          const { data, error } = await supabase.storage
+            .from("images")
+            .upload(filePath, file);
 
-        if (error) {
-          console.error("Supabase upload error:", error);
-          toast.error(`Failed to upload ${file.name}`);
-          continue;
-        }
+          if (error) {
+            console.error("Supabase upload error:", error);
+            toast.error(`Failed to upload ${file.name}: ${error.message}`);
+            continue;
+          }
 
-        // Get public URL
-        const { data: publicUrlData } = supabase.storage
-          .from("advertisement-images")
-          .getPublicUrl(filePath);
+          // Get public URL
+          const { data: publicUrlData } = supabase.storage
+            .from("images")
+            .getPublicUrl(filePath);
 
-        if (publicUrlData) {
-          uploadedUrls.push(publicUrlData.publicUrl);
+          if (publicUrlData && publicUrlData.publicUrl) {
+            const publicUrl = publicUrlData.publicUrl;
+            // Ensure the URL is properly formatted
+            if (typeof publicUrl === "string" && publicUrl.trim()) {
+              uploadedUrls.push(publicUrl);
+            }
+          }
+        } catch (fileError) {
+          console.error(`Error processing file ${file.name}:`, fileError);
+          toast.error(`Failed to process ${file.name}`);
         }
       }
 
       if (uploadedUrls.length > 0) {
         setImages([...images, ...uploadedUrls]);
         toast.success(`${uploadedUrls.length} image(s) uploaded successfully`);
+      } else if (files.length > 0) {
+        toast.error("No images were successfully uploaded");
       }
     } catch (error) {
       console.error("Error uploading images:", error);
-      toast.error("Failed to upload images");
+      toast.error(
+        "Failed to upload images. Please check your internet connection and try again.",
+      );
     } finally {
       setUploadingImages(false);
     }
@@ -119,7 +132,7 @@ export default function CreateListing() {
         return;
       }
 
-      if (images.length === 0) {
+      /* if (images.length === 0) {
         toast.error("Please upload at least one image");
         return;
       }
@@ -128,19 +141,27 @@ export default function CreateListing() {
       if (isNaN(price) || price <= 0) {
         toast.error("Price must be a positive number");
         return;
-      }
+      }*/
 
       setLoading(true);
 
-      // Get token from localStorage
+      // Get token from localStorage (required for user identity)
       const token = localStorage.getItem("token");
+
+      // Verify token exists before proceeding
       if (!token) {
-        toast.error("You must be logged in to create a listing");
-        navigate("/login");
+        toast.error(
+          "Authentication required. Please login to create a listing.",
+        );
+        setLoading(false);
         return;
       }
 
-      // Prepare listing data
+      console.log(
+        "✅ Token found, preparing to send listing with user identity...",
+      );
+
+      // Prepare listing data (DO NOT include userRef - backend will handle this via token)
       const listingData = {
         title: title.trim(),
         description: description.trim(),
@@ -151,22 +172,30 @@ export default function CreateListing() {
         urgent,
         badge: badge || null,
         currency: "LKR",
+        // NOTE: userRef is NOT included here - backend derives it from the token
       };
+
+      console.log("📝 Listing data prepared (without userRef):", listingData);
+
+      // Prepare headers with REQUIRED authorization
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // REQUIRED: Include token for user identity
+      };
+
+      console.log("🔐 Headers with Authorization token prepared");
 
       // Submit to backend
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/api/listings/create",
         listingData,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+          headers,
         },
       );
 
-      toast.success("Listing created successfully!");
-      console.log("Listing response:", response.data);
+      toast.success("✅ Listing created successfully!");
+      console.log("✅ Listing created. Response:", response.data);
 
       // Reset form
       setTitle("");
@@ -183,12 +212,33 @@ export default function CreateListing() {
         navigate("/");
       }, 2000);
     } catch (error) {
-      console.error("Error creating listing:", error);
+      console.error("❌ Error creating listing:", error);
+
+      // Extract specific error message from backend
+      let errorMessage = "Failed to create listing. Please try again.";
+
       if (error.response?.data?.message) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error("Failed to create listing. Please try again.");
+        errorMessage = error.response.data.message;
+        console.error("Backend error message:", errorMessage);
+      } else if (error.response?.status === 400) {
+        errorMessage =
+          "Invalid listing data. Please check all fields and try again.";
+        console.error("400 Bad Request - Invalid data");
+      } else if (error.response?.status === 401) {
+        errorMessage = "Authentication failed. Please login again.";
+        console.error("401 Unauthorized - Token invalid or expired");
+      } else if (error.response?.status === 403) {
+        errorMessage = "You don't have permission to create listings.";
+        console.error("403 Forbidden - Permission denied");
+      } else if (error.response?.status === 500) {
+        errorMessage = "Server error. Please try again later.";
+        console.error("500 Server Error");
+      } else if (error.message === "Network Error") {
+        errorMessage = "Network error. Please check your connection.";
+        console.error("Network Error");
       }
+
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }

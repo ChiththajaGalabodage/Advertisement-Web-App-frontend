@@ -7,10 +7,19 @@ import RegisterPage from "./pages/register";
 import CreateListing from "./pages/CreateListing";
 import ListingDetail from "./pages/ListingDetail";
 import AdminPage from "./pages/adminPage";
-import AdminGuard from "./components/AdminGuard";
 import SearchPage from "./pages/SearchPage";
 import AboutUsPage from "./pages/client/aboutUsPage";
 import PricingPlan from "./pages/client/pricingPlan";
+import Vehicles from "./pages/client/categoryPages/vehicles";
+import HomeLiving from "./pages/client/categoryPages/home&Living";
+import MobilePhone from "./pages/client/categoryPages/mobilePhone";
+import BusinessIndustry from "./pages/client/categoryPages/business&Industry";
+import Hobbies from "./pages/client/categoryPages/hobbies";
+import Property from "./pages/client/categoryPages/property";
+import WomenFashion from "./pages/client/categoryPages/womenFashion";
+import MenFashion from "./pages/client/categoryPages/menFashion";
+import Essentials from "./pages/client/categoryPages/Essentials";
+import Education from "./pages/client/categoryPages/education";
 
 import { Toaster } from "react-hot-toast";
 //import AddProductPage from "./pages/admin/addProductPage";
@@ -36,14 +45,22 @@ function App() {
             <Route path="/create-listing" element={<CreateListing />} />
             <Route path="/listing/:id" element={<ListingDetail />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/admin/*" element={<AdminPage />} />
+            {/* Category Routes */}
+            <Route path="/category/vehicles" element={<Vehicles />} />
+            <Route path="/category/home-living" element={<HomeLiving />} />
+            <Route path="/category/mobile-phone" element={<MobilePhone />} />
             <Route
-              path="/admin/*"
-              element={
-                <AdminGuard>
-                  <AdminPage />
-                </AdminGuard>
-              }
+              path="/category/business-industry"
+              element={<BusinessIndustry />}
             />
+            <Route path="/category/hobbies" element={<Hobbies />} />
+            <Route path="/category/property" element={<Property />} />
+            <Route path="/category/women-fashion" element={<WomenFashion />} />
+            <Route path="/category/men-fashion" element={<MenFashion />} />
+            <Route path="/category/essentials" element={<Essentials />} />
+            <Route path="/category/education" element={<Education />} />
+
             <Route path="/search/:categoryName" element={<CategoryPage />} />
             <Route path="/*" element={<Home />} />
           </Routes>

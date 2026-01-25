@@ -20,19 +20,6 @@ export default function HomePage() {
     }
   }, [isLoading]);
 
-  const category = [
-    { name: "Vehicles", count: 217, icon: "🚗" },
-    { name: "Home & Living", count: 131, icon: "🏠" },
-    { name: "Mobile Phone", count: 108, icon: "📱" },
-    { name: "Business & Industry", count: 101, icon: "🏭" },
-    { name: "Hobbies, Sports & Kids", count: 91, icon: "🏀" },
-    { name: "Property", count: 0, icon: "🏢" },
-    { name: "Women Fashion & Beauty", count: 0, icon: "👗" },
-    { name: "Men's Fashion & Grooming", count: 0, icon: "👔" },
-    { name: "Essentials", count: 0, icon: "🛠️" },
-    { name: "Education", count: 0, icon: "🎓" },
-  ];
-
   return (
     <div className="min-h-screen bg-white">
       {/* Categories */}

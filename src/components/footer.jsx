@@ -94,13 +94,13 @@ export default function Footer() {
 
       {/* Floating Buttons */}
       <div className="fixed bottom-6 right-6 flex flex-col space-y-3 items-end">
-        <button className="bg-black text-white px-4 py-2 rounded-full flex items-center space-x-2 shadow-md">
+        {/*} <button className="bg-black text-white px-4 py-2 rounded-full flex items-center space-x-2 shadow-md">
           <span>Purchase Now</span>
         </button>
         <button className="flex items-center bg-white px-3 py-2 rounded-full shadow-md">
           <span className="mr-2">Chat with us 👋</span>
-        </button>
-        <div className="bg-blue-600 text-white p-2 rounded-full">💬</div>
+        </button> 
+        <div className="bg-blue-600 text-white p-2 rounded-full">💬</div>*/}
       </div>
     </footer>
   );

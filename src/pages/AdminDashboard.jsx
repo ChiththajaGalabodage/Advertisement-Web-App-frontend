@@ -5,9 +5,11 @@ import toast from "react-hot-toast";
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [listings, setListings] = useState([]);
+  const [analytics, setAnalytics] = useState(null);
   const [activeTab, setActiveTab] = useState("listings");
   const [loadingUsers, setLoadingUsers] = useState(false);
   const [loadingListings, setLoadingListings] = useState(false);
+  const [loadingAnalytics, setLoadingAnalytics] = useState(false);
   const [deleting, setDeleting] = useState(null);
 
   const token = localStorage.getItem("token");
@@ -15,7 +17,6 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchListings();
     fetchUsers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   // Fetch all listings
@@ -43,11 +44,6 @@ export default function AdminDashboard() {
       setLoadingUsers(true);
       const response = await axios.get(
         import.meta.env.VITE_BACKEND_URL + "/api/users/gau",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
       );
 
       const usersData = Array.isArray(response.data)
@@ -60,6 +56,23 @@ export default function AdminDashboard() {
       toast.error("Failed to load users");
     } finally {
       setLoadingUsers(false);
+    }
+  }
+
+  // Fetch analytics (available for manual trigger if needed)
+  async function _fetchAnalytics() {
+    try {
+      setLoadingAnalytics(true);
+      const response = await axios.get(
+        import.meta.env.VITE_BACKEND_URL + "/api/analytics",
+      );
+      setAnalytics(response.data.analytics);
+      console.log("Fetched analytics:", response.data.analytics);
+    } catch (error) {
+      console.error("Error fetching analytics:", error);
+      toast.error("Failed to load analytics");
+    } finally {
+      setLoadingAnalytics(false);
     }
   }
 
@@ -77,11 +90,6 @@ export default function AdminDashboard() {
 
       const response = await axios.delete(
         import.meta.env.VITE_BACKEND_URL + `/api/listings/delete/${listingId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
       );
 
       toast.success("Listing deleted successfully");
@@ -341,6 +349,51 @@ export default function AdminDashboard() {
                   </tbody>
                 </table>
               </div>
+            )}
+          </div>
+        )}
+
+        {/* Analytics Tab */}
+        {activeTab === "analytics" && (
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Analytics</h2>
+
+            {loadingAnalytics ? (
+              <div className="flex justify-center items-center py-12">
+                <div className="text-center">
+                  <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                  <p className="mt-4 text-gray-600">Loading analytics...</p>
+                </div>
+              </div>
+            ) : analytics ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div className="bg-blue-50 p-6 rounded-lg">
+                  <h3 className="text-lg font-semibold text-blue-800">
+                    Total Users
+                  </h3>
+                  <p className="text-3xl font-bold text-blue-600">
+                    {analytics.totalUsers}
+                  </p>
+                </div>
+                <div className="bg-green-50 p-6 rounded-lg">
+                  <h3 className="text-lg font-semibold text-green-800">
+                    Total Listings
+                  </h3>
+                  <p className="text-3xl font-bold text-green-600">
+                    {analytics.totalListings}
+                  </p>
+                </div>
+                <div className="bg-purple-50 p-6 rounded-lg">
+                  <h3 className="text-lg font-semibold text-purple-800">
+                    Total Views
+                  </h3>
+                  <p className="text-3xl font-bold text-purple-600">
+                    {analytics.totalViews}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <p className="text-gray-600">No analytics data available</p>
             )}
           </div>
         )}
