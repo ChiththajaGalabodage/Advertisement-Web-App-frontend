@@ -6,14 +6,17 @@ import toast from "react-hot-toast";
 export default function ListingDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  // Listing Data State
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isOwner, setIsOwner] = useState(false);
-  const [deleting, setDeleting] = useState(false);
 
-  const token = localStorage.getItem("token");
+  // Contact Modal State
+  const [modalOpen, setModalOpen] = useState(false);
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     fetchListingDetails();
@@ -32,28 +35,6 @@ export default function ListingDetail() {
 
       const listingData = response.data.listing || response.data;
       setListing(listingData);
-
-      // Check if current user is the owner
-      if (token) {
-        try {
-          const parts = token.split(".");
-          if (parts.length === 3) {
-            const decoded = JSON.parse(atob(parts[1]));
-            const currentUserId = decoded.id || decoded.user?.id;
-            if (
-              currentUserId &&
-              listingData.userRef &&
-              currentUserId === listingData.userRef._id
-            ) {
-              setIsOwner(true);
-            }
-          }
-        } catch (err) {
-          console.error("Error decoding token:", err);
-        }
-      }
-
-      console.log("Fetched listing:", listingData);
     } catch (err) {
       console.error("Error fetching listing:", err);
       if (err.response?.status === 404) {
@@ -66,6 +47,48 @@ export default function ListingDetail() {
       setLoading(false);
     }
   }
+
+  // Handle Contact Button Click
+  const handleContact = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login to contact the seller");
+      return;
+    }
+    setModalOpen(true);
+  };
+
+  // Handle Send Message (API Call)
+  const handleSendMessage = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!subject.trim() || !message.trim()) {
+      toast.error("Subject and message are required");
+      return;
+    }
+
+    try {
+      await axios.post(
+        import.meta.env.VITE_BACKEND_URL + "/api/contacts",
+        {
+          receiverId: listing?.userRef?._id,
+          listingId: listing?._id,
+          subject,
+          message,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      toast.success("Message sent successfully!");
+      setModalOpen(false);
+      setSubject("");
+      setMessage("");
+    } catch (error) {
+      console.error("❌ Error sending message:", error);
+      toast.error("Failed to send message. Please try again.");
+    }
+  };
 
   // Handle image carousel navigation
   function nextImage() {
@@ -82,46 +105,10 @@ export default function ListingDetail() {
     }
   }
 
-  // Handle delete listing
-  async function handleDeleteListing() {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this listing?",
-    );
-
-    if (!confirmed) return;
-
-    try {
-      setDeleting(true);
-
-      await axios.delete(
-        import.meta.env.VITE_BACKEND_URL + `/api/listings/delete/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      toast.success("Listing deleted successfully");
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
-    } catch (error) {
-      console.error("Error deleting listing:", error);
-      if (error.response?.data?.message) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error("Failed to delete listing");
-      }
-    } finally {
-      setDeleting(false);
-    }
-  }
-
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex justify-center items-center">
+      <div className="min-h-screen bg-gray-100 flex justify-center items-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="mt-4 text-gray-600 text-lg">Loading listing...</p>
@@ -133,7 +120,7 @@ export default function ListingDetail() {
   // Error state
   if (error || !listing) {
     return (
-      <div className="min-h-screen bg-gray-50 flex justify-center items-center">
+      <div className="min-h-screen bg-gray-100 flex justify-center items-center">
         <div className="bg-white rounded-lg shadow-lg p-8 text-center max-w-md">
           <h1 className="text-2xl font-bold text-gray-800 mb-4">
             Oops! {error || "Listing not found"}
@@ -156,7 +143,8 @@ export default function ListingDetail() {
   const currentImage = hasImages ? listing.image[currentImageIndex] : null;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    // Changed bg-gray-50 to bg-gray-100 for a clearer gray background
+    <div className="min-h-screen bg-gray-100 py-8 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Back Button */}
         <button
@@ -315,54 +303,60 @@ export default function ListingDetail() {
                   </p>
                 </div>
 
-                {/* Seller Info */}
+                {/* Seller Info (No Image, Added Phone) */}
                 {listing.userRef && (
-                  <div className="bg-gray-100 rounded-lg p-4 mb-6">
-                    <p className="text-sm text-gray-600 mb-2">Seller</p>
-                    <div className="flex items-center gap-3">
-                      {listing.userRef.img && (
-                        <img
-                          src={listing.userRef.img}
-                          alt={listing.userRef.firstName}
-                          className="w-12 h-12 rounded-full object-cover"
-                        />
-                      )}
+                  <div className="bg-gray-100 rounded-lg p-6 mb-6">
+                    <h3 className="text-lg font-bold text-gray-800 mb-4 border-b border-gray-200 pb-2">
+                      Seller Information
+                    </h3>
+                    <div className="flex flex-col gap-3">
+                      {/* Name */}
                       <div>
-                        <p className="font-semibold text-gray-800">
+                        <p className="text-sm text-gray-500">Name</p>
+                        <p className="font-semibold text-gray-800 text-lg">
                           {listing.userRef.firstName} {listing.userRef.lastName}
                         </p>
-                        <p className="text-sm text-gray-600">
-                          {listing.userRef.email}
-                        </p>
+                      </div>
+
+                      {/* Email */}
+                      {listing.userRef.email && (
+                        <div>
+                          <p className="text-sm text-gray-500">Email</p>
+                          <p className="text-gray-700 font-medium">
+                            {listing.userRef.email}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Phone Number */}
+                      <div>
+                        <p className="text-sm text-gray-500">Phone Number</p>
+                        {listing.userRef.phoneNumber ? (
+                          <a
+                            href={`tel:${listing.userRef.phoneNumber}`}
+                            className="text-blue-600 font-bold text-lg hover:underline"
+                          >
+                            {listing.userRef.phoneNumber}
+                          </a>
+                        ) : (
+                          <p className="text-gray-500 italic">
+                            No number provided
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Action Buttons */}
+              {/* Contact Button (Now Functional) */}
               <div className="flex gap-4">
-                {isOwner ? (
-                  <>
-                    <Link
-                      to={`/edit-listing/${id}`}
-                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition text-center"
-                    >
-                      Edit Listing
-                    </Link>
-                    <button
-                      onClick={handleDeleteListing}
-                      disabled={deleting}
-                      className="flex-1 bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-semibold transition"
-                    >
-                      {deleting ? "Deleting..." : "Delete Listing"}
-                    </button>
-                  </>
-                ) : (
-                  <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
-                    Contact Seller
-                  </button>
-                )}
+                <button
+                  onClick={handleContact}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition"
+                >
+                  Contact Seller
+                </button>
               </div>
             </div>
           </div>
@@ -392,6 +386,57 @@ export default function ListingDetail() {
           </div>
         </div>
       </div>
+
+      {/* Contact Modal Popup */}
+      {modalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 px-4">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md animate-fade-in">
+            <h3 className="text-xl font-bold mb-4 text-gray-800">
+              Contact Seller
+            </h3>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Subject
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. Is this still available?"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Message
+              </label>
+              <textarea
+                placeholder="Write your message here..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded h-32 resize-none focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setModalOpen(false)}
+                className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded transition font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSendMessage}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition font-medium"
+              >
+                Send Message
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
