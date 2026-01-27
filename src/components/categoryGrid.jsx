@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 // Define your category data
 const categories = [
-  { name: "Vehicles", icon: "🚗", count: 217, route: "/category/vehicles" },
+  { name: "Vehicles", icon: "🚗", route: "/category/vehicles" },
   {
     name: "Home & Living",
     icon: "🏠",
