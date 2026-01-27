@@ -146,10 +146,10 @@ const Dashboard = () => {
     <Box
       sx={{
         bgcolor: "#f5f5f5",
-        width: "100%", // Full width of parent
-        height: "100%", // Full height of parent
-        p: 0, // Remove outer padding ("not include space")
-        overflowX: "hidden", // Prevent horizontal scroll from Grid negative margins
+        width: "100%",
+        minHeight: "100vh",
+        p: 0,
+        overflowX: "hidden",
       }}
     >
       {/* Header - Reduced margin to save space */}
@@ -201,7 +201,7 @@ const Dashboard = () => {
         </Grid>
       </Box>
 
-      {/* Middle row: CategoryPieChart and RecentUsersTable */}
+      {/* Middle row: CategoryPieChart on left, RecentUsersTable and RecentAdsTable on right */}
       <Box sx={{ px: 2, mb: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
@@ -211,16 +211,10 @@ const Dashboard = () => {
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
-            <RecentUsersTable users={stats?.recentUsers || []} />
-          </Grid>
-        </Grid>
-      </Box>
-
-      {/* Bottom row: RecentAdsTable */}
-      <Box sx={{ px: 2, pb: 2 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <RecentAdsTable ads={stats?.recentAds || []} />
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <RecentUsersTable users={stats?.recentUsers || []} />
+              <RecentAdsTable ads={stats?.recentAds || []} />
+            </Box>
           </Grid>
         </Grid>
       </Box>

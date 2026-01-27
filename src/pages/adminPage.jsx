@@ -10,7 +10,17 @@ export default function AdminPage() {
   const path = location.pathname;
 
   function getClass(name) {
-    if (path.includes(name)) {
+    if (name === "dashboard" && path === "/admin/dashboard") {
+      return "bg-accent text-white p-4";
+    } else if (
+      name === "admin-dashboard" &&
+      path === "/admin/admin-dashboard"
+    ) {
+      return "bg-accent text-white p-4";
+    } else if (
+      name === "category-analytics" &&
+      path === "/admin/category-analytics"
+    ) {
       return "bg-accent text-white p-4";
     } else {
       return "text-accent p-4";

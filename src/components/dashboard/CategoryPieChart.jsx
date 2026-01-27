@@ -19,7 +19,13 @@ const CategoryPieChart = ({ data }) => {
   return (
     <Paper
       elevation={3}
-      sx={{ p: 3, height: "100%", display: "flex", flexDirection: "column" }}
+      sx={{
+        p: 3,
+        pb: 4,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
     >
       <Typography variant="h6" fontWeight="bold" gutterBottom>
         Ads by Category
@@ -29,12 +35,12 @@ const CategoryPieChart = ({ data }) => {
           <Pie
             data={data}
             cx="50%"
-            cy="50%"
+            cy="40%"
             labelLine={true}
             label={({ name, percent }) =>
               `${name}: ${(percent * 100).toFixed(0)}%`
             }
-            outerRadius="70%"
+            outerRadius="55%"
             fill="#8884d8"
             dataKey="value"
           >
@@ -46,7 +52,11 @@ const CategoryPieChart = ({ data }) => {
             ))}
           </Pie>
           <Tooltip />
-          <Legend verticalAlign="bottom" height={36} />
+          <Legend
+            verticalAlign="bottom"
+            height={120}
+            wrapperStyle={{ paddingTop: "10px" }}
+          />
         </PieChart>
       </ResponsiveContainer>
     </Paper>
