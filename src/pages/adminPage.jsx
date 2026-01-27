@@ -1,11 +1,9 @@
 import { Link, Route, Routes, useLocation } from "react-router-dom";
-import AdminProductsPage from "./admin/productsPage";
-import AddProductPage from "./admin/addProductPage";
-import EditProductPage from "./admin/editProductPage";
-import AdminOrdersPage from "./admin/adminOrdersPage";
 import Loading from "../components/loading";
-import AdminUsersPage from "./admin/user";
+
 import AdminDashboard from "./AdminDashboard";
+import Dashboard from "./admin/Dashboard";
+import CategoryAnalytics from "./admin/CategoryAnalytics";
 
 export default function AdminPage() {
   const location = useLocation();
@@ -20,39 +18,42 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="w-full h-screen flex">
+    <div className="w-full min-h-screen flex bg-gray-50">
       <>
-        <div className="h-full w-[300px] text-accent font-bold px-4 gap-6   text-xl  flex flex-col bg-white">
-          <Link className={getClass("dashboard")} to="/admin/dashboard">
-            Dashboard
-          </Link>
-          <Link className={getClass("products")} to="/admin/products">
-            Products
-          </Link>
-          <Link className={getClass("users")} to="/admin/users/gau">
-            Users
-          </Link>
-          <Link className={getClass("orders")} to="/admin/orders">
-            Orders
-          </Link>
-          <Link className={getClass("reveiws")} to="/admin/reveiws">
-            Reviews
-          </Link>
+        <div className="h-screen w-[280px] text-accent font-semibold text-lg flex flex-col bg-white shadow-lg sticky top-0">
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-2xl font-bold text-accent">Admin Panel</h2>
+          </div>
+          <nav className="flex flex-col gap-2 p-4">
+            <Link
+              className={`${getClass("dashboard")} rounded-lg transition-all hover:bg-accent hover:text-white`}
+              to="/admin/dashboard"
+            >
+              📊 Dashboard
+            </Link>
+            <Link
+              className={`${getClass("admin-dashboard")} rounded-lg transition-all hover:bg-accent hover:text-white`}
+              to="/admin/admin-dashboard"
+            >
+              📋 Admin View
+            </Link>
+            <Link
+              className={`${getClass("category-analytics")} rounded-lg transition-all hover:bg-accent hover:text-white`}
+              to="/admin/category-analytics"
+            >
+              📈 Ads Category
+            </Link>
+          </nav>
         </div>
 
-        <div className="h-full w-[calc(100%-300px)]  border-accent border-4 rounded-xl bg-white">
+        <div className="flex-1 overflow-auto">
           <Routes path="/*">
-            <Route path="/dashboard" element={<AdminDashboard />} />
-            <Route path="/products" element={<AdminProductsPage />} />
-            <Route path="/users/gau/" element={<AdminUsersPage />} />
-            <Route path="/orders" element={<AdminOrdersPage />} />
-            <Route path="/reviews" element={<h1>Reviews</h1>} />
-            <Route path="/add-product" element={<AddProductPage />} />
-            <Route path="/edit-product" element={<EditProductPage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/category-analytics" element={<CategoryAnalytics />} />
           </Routes>
         </div>
       </>
-      )
     </div>
   );
 }

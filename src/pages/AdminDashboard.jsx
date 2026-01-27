@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import ActiveViewsChart from "../components/dashboard/ActiveViewsChart";
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -13,11 +14,17 @@ export default function AdminDashboard() {
   const [deleting, setDeleting] = useState(null);
 
   const token = localStorage.getItem("token");
+  const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
 
   useEffect(() => {
     fetchListings();
     fetchUsers();
   }, [token]);
+
+  // Function to count posts by user
+  function getUserPostCount(userId) {
+    return listings.filter((listing) => listing.userRef?._id === userId).length;
+  }
 
   // Fetch all listings
   async function fetchListings() {
@@ -43,7 +50,8 @@ export default function AdminDashboard() {
     try {
       setLoadingUsers(true);
       const response = await axios.get(
-        import.meta.env.VITE_BACKEND_URL + "/api/users/gau",
+        import.meta.env.VITE_BACKEND_URL + "/api/users/all",
+        { headers: authHeaders },
       );
 
       const usersData = Array.isArray(response.data)
@@ -53,7 +61,11 @@ export default function AdminDashboard() {
       console.log("Fetched users:", usersData);
     } catch (error) {
       console.error("Error fetching users:", error);
-      toast.error("Failed to load users");
+      if (error.response?.status === 403) {
+        toast.error("Forbidden: Admin authorization required to view users");
+      } else {
+        toast.error("Failed to load users");
+      }
     } finally {
       setLoadingUsers(false);
     }
@@ -90,6 +102,7 @@ export default function AdminDashboard() {
 
       const response = await axios.delete(
         import.meta.env.VITE_BACKEND_URL + `/api/listings/delete/${listingId}`,
+        { headers: authHeaders },
       );
 
       toast.success("Listing deleted successfully");
@@ -141,6 +154,16 @@ export default function AdminDashboard() {
             }`}
           >
             Users ({users.length})
+          </button>
+          <button
+            onClick={() => setActiveTab("analytics")}
+            className={`px-6 py-3 rounded-lg font-semibold transition ${
+              activeTab === "analytics"
+                ? "bg-blue-600 text-white"
+                : "bg-white text-gray-700 hover:bg-gray-100"
+            }`}
+          >
+            Analytics
           </button>
         </div>
 
@@ -285,7 +308,7 @@ export default function AdminDashboard() {
                         Joined
                       </th>
                       <th className="px-4 py-3 text-left font-semibold text-gray-700">
-                        Is Admin
+                        Posts Count
                       </th>
                     </tr>
                   </thead>
@@ -334,14 +357,8 @@ export default function AdminDashboard() {
                           {new Date(user.createdAt).toLocaleDateString()}
                         </td>
                         <td className="px-4 py-3">
-                          <span
-                            className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
-                              user.isAdmin
-                                ? "bg-purple-100 text-purple-800"
-                                : "bg-gray-100 text-gray-800"
-                            }`}
-                          >
-                            {user.isAdmin ? "Yes" : "No"}
+                          <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+                            {getUserPostCount(user._id)} posts
                           </span>
                         </td>
                       </tr>
@@ -355,24 +372,19 @@ export default function AdminDashboard() {
 
         {/* Analytics Tab */}
         {activeTab === "analytics" && (
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Analytics</h2>
-
-            {loadingAnalytics ? (
-              <div className="flex justify-center items-center py-12">
-                <div className="text-center">
-                  <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-                  <p className="mt-4 text-gray-600">Loading analytics...</p>
-                </div>
-              </div>
-            ) : analytics ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="space-y-6">
+            {/* Stats Cards */}
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                Analytics Overview
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-blue-50 p-6 rounded-lg">
                   <h3 className="text-lg font-semibold text-blue-800">
                     Total Users
                   </h3>
                   <p className="text-3xl font-bold text-blue-600">
-                    {analytics.totalUsers}
+                    {users.length}
                   </p>
                 </div>
                 <div className="bg-green-50 p-6 rounded-lg">
@@ -380,7 +392,7 @@ export default function AdminDashboard() {
                     Total Listings
                   </h3>
                   <p className="text-3xl font-bold text-green-600">
-                    {analytics.totalListings}
+                    {listings.length}
                   </p>
                 </div>
                 <div className="bg-purple-50 p-6 rounded-lg">
@@ -388,13 +400,19 @@ export default function AdminDashboard() {
                     Total Views
                   </h3>
                   <p className="text-3xl font-bold text-purple-600">
-                    {analytics.totalViews}
+                    {listings.reduce(
+                      (sum, listing) => sum + (listing.views || 0),
+                      0,
+                    )}
                   </p>
                 </div>
               </div>
-            ) : (
-              <p className="text-gray-600">No analytics data available</p>
-            )}
+            </div>
+
+            {/* Active Views Chart */}
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <ActiveViewsChart listings={listings} />
+            </div>
           </div>
         )}
       </div>

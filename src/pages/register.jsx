@@ -35,12 +35,6 @@ export default function RegisterPage() {
         return;
       }
 
-      // Validate password length
-      if (password.length < 6) {
-        toast.error("Password must be at least 6 characters long");
-        return;
-      }
-
       // Validate password confirmation
       if (password !== confirmPassword) {
         toast.error("Passwords do not match");

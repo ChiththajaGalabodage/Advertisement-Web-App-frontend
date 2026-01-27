@@ -6,42 +6,42 @@ const categories = [
   {
     name: "Home & Living",
     icon: "🏠",
-    count: 131,
+
     route: "/category/home-living",
   },
   {
     name: "Mobile Phone",
     icon: "📱",
-    count: 108,
+
     route: "/category/mobile-phone",
   },
   {
     name: "Business & Industry",
     icon: "🏭",
-    count: 101,
+
     route: "/category/business-industry",
   },
   {
     name: "Hobbies, Sports & Kids",
     icon: "🏀",
-    count: 91,
+
     route: "/category/hobbies",
   },
   { name: "Property", icon: "🏢", count: 0, route: "/category/property" },
   {
     name: "Women Fashion & Beauty",
     icon: "👗",
-    count: 0,
+
     route: "/category/women-fashion",
   },
   {
     name: "Men's Fashion & Grooming",
     icon: "👔",
-    count: 0,
+
     route: "/category/men-fashion",
   },
-  { name: "Essentials", icon: "🛠️", count: 0, route: "/category/essentials" },
-  { name: "Education", icon: "🎓", count: 0, route: "/category/education" },
+  { name: "Essentials", icon: "🛠️", route: "/category/essentials" },
+  { name: "Education", icon: "🎓", route: "/category/education" },
 ];
 
 export default function CategoryGrid() {
