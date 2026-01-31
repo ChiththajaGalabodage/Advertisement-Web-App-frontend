@@ -27,7 +27,7 @@ const categories = [
 
     route: "/category/hobbies",
   },
-  { name: "Property", icon: "🏢", count: 0, route: "/category/property" },
+  { name: "Property", icon: "🏢", route: "/category/property" },
   {
     name: "Women Fashion & Beauty",
     icon: "👗",
