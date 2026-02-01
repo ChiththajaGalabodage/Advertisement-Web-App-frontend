@@ -120,7 +120,7 @@ export default function SearchPage() {
       <div className="flex-1 w-full py-8 px-4">
         <div className="max-w-6xl mx-auto">
           {/* Search Bar */}
-          <form onSubmit={handleSearch} className="mb-8">
+          <form onSubmit={handleSearch} className="mb-8 ">
             <div className="flex gap-2 mb-4">
               <input
                 type="text"

@@ -80,6 +80,7 @@ export default function HomeLiving() {
   return (
     <>
       <Header />
+      <section className="py-12 px-6  w-screen  bg-gray-50">
       <div className="flex-1 w-full py-8 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <form onSubmit={handleSearch} className="mb-8">
@@ -188,6 +189,7 @@ export default function HomeLiving() {
           )}
         </div>
       </div>
+      </section>
       <Footer />
     </>
   );
