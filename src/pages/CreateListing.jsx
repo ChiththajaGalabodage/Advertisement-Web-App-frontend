@@ -19,7 +19,8 @@ export default function CreateListing() {
 
   const categories = [
     "Vehicles",
-    "Hobbies",
+    "Hobbies, Sports & Kids",
+    "Mobile Phone",
     "Home & Living",
     "Business & Industry",
     "Property",

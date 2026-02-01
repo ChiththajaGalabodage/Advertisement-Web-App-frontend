@@ -204,12 +204,12 @@ const Dashboard = () => {
       {/* Middle row: CategoryPieChart on left, RecentUsersTable and RecentAdsTable on right */}
       <Box sx={{ px: 2, mb: 3 }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
+          {/* <Grid item xs={12} md={6}>
             {/* Removed minHeight fixed pixel constraint to let it fit naturally if needed */}
-            <Box sx={{ height: "100%", minHeight: 400 }}>
+          {/* <Box sx={{ height: "100%", minHeight: 400 }}>
               <CategoryPieChart data={stats?.categoryData || []} />
             </Box>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} md={6}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <RecentUsersTable users={stats?.recentUsers || []} />
