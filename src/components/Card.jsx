@@ -1,5 +1,6 @@
 import { MapPin, Tag } from "lucide-react";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 /**
  * ListingCard - Reusable component for displaying listings
@@ -69,7 +70,11 @@ export default function ListingCard({ listing, size = "medium" }) {
 
         {/* Footer */}
         <div className="flex justify-between items-center mt-3 text-gray-400 text-xs">
-          <span>{listing.postedAgo || "Recently"}</span>
+          <span>
+            {listing.createdAt
+              ? moment(listing.createdAt).format("MMM DD, YYYY")
+              : "Recently"}
+          </span>
           {listing.featured && (
             <span className="text-yellow-600 font-bold">★ Featured</span>
           )}

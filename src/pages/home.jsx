@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import moment from "moment";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import CategoryGrid from "../components/categoryGrid";
@@ -205,7 +206,12 @@ export default function Home() {
 
                       {/* Posted Time */}
                       <p className="text-xs text-gray-500">
-                        Posted {listing.postedAgo || "recently"}
+                        Posted{" "}
+                        {listing.createdAt
+                          ? moment(listing.createdAt).format(
+                              "MMM DD, YYYY [at] h:mm A",
+                            )
+                          : "recently"}
                       </p>
 
                       {/* Seller Info (if populated) */}

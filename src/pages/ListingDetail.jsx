@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import moment from "moment";
 
 export default function ListingDetail() {
   const { id } = useParams();
@@ -288,7 +289,11 @@ export default function ListingDetail() {
                   <div>
                     <p className="text-sm text-gray-600">Posted</p>
                     <p className="font-semibold text-gray-800">
-                      {listing.postedAgo || "Recently"}
+                      {listing.createdAt
+                        ? moment(listing.createdAt).format(
+                            "MMM DD, YYYY [at] h:mm A",
+                          )
+                        : "Recently"}
                     </p>
                   </div>
                 </div>
