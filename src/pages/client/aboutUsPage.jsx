@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Megaphone, Users, ShieldCheck, Zap, ArrowRight } from "lucide-react";
 
 const AboutUsPage = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
@@ -91,7 +93,10 @@ const AboutUsPage = () => {
           <p className="mb-8 opacity-80">
             Join thousands of users and start posting your advertisements today.
           </p>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full inline-flex items-center transition-colors">
+          <button
+            onClick={() => navigate("/register")}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full inline-flex items-center transition-colors"
+          >
             Get Started Now <ArrowRight className="ml-2" size={20} />
           </button>
         </div>
