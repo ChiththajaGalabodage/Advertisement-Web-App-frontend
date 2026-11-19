@@ -1,12 +1,61 @@
-# React + Vite
+# Advertisement Web App | Marketplace Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Repository:** [ChiththajaGalabodage/Advertisement-Web-App-frontend](https://github.com/ChiththajaGalabodage/Advertisement-Web-App-frontend)  
+**Category:** Advertisement  
+**Repository visibility at inspection:** Public  
+**Code status:** Implementation present
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+React frontend for a classified-advertisement marketplace with user accounts, ad creation, category browsing, listing details and administration interfaces.
 
-## Expanding the ESLint configuration
+## Technologies / tools
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+`React 19` · `Vite 6` · `React Router` · `Tailwind CSS 4` · `Material UI` · `Axios` · `Recharts` · `Google OAuth` · `Supabase JS`
+
+## What is in this repository
+
+- Registration, login, password recovery and Google OAuth client UI
+- Create listings and browse listing details
+- Search and category routes including vehicles, property, education and more
+- User and admin pages, including dashboard components
+- Charts, notifications and image-related integrations represented in dependencies
+
+## Project structure
+
+```text
+Advertisement-Web-App-frontend/
+├── src/
+│   ├── App.jsx          # Top-level routes
+│   ├── pages/           # Marketplace and admin screens
+│   ├── components/      # Shared UI
+│   ├── utils/           # Helpers
+│   └── supabaseClient.js
+├── package.json
+└── vite.config.js
+```
+
+## Getting started
+
+```bash
+git clone https://github.com/ChiththajaGalabodage/Advertisement-Web-App-frontend.git
+cd Advertisement-Web-App-frontend
+npm install
+npm run dev
+```
+
+Build with `npm run build`. Note that this repository's default branch is **`master`**, not `main`.
+
+## Configuration and security
+
+The frontend depends on external API/OAuth/storage configuration. Inspect its own API client and Supabase usage to set your local values. Do not put private keys in Vite frontend variables or commit real secrets. Google OAuth browser client IDs are public identifiers; OAuth client **secrets** must remain server-side.
+
+## Additional notes
+
+### Connected project
+[Advertisement-Web-App-backend](https://github.com/ChiththajaGalabodage/Advertisement-Web-App-backend) provides the Express/MongoDB API. A separate [landing UI](https://github.com/ChiththajaGalabodage/Advertisement-Web-App--frontend) is also maintained as another repository.
+
+---
+
+**Maintained in:** [ChiththajaGalabodage on GitHub](https://github.com/ChiththajaGalabodage)  
+*Documentation describes the inspected repository snapshot; runtime and deployment were not independently verified.*
